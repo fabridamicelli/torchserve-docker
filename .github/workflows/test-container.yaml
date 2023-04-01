@@ -1,0 +1,43 @@
+name: Test docker image and container 
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  check-docker-image:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.8", "3.9", "3.10"]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Checkout TorchServe branch
+        run: |
+          git clone -b fix_docker_python_version --single-branch https://github.com/fabridamicelli/serve.git
+
+      - name: Test Image Build
+        id: image_build
+        working-directory: serve/docker
+        run: |
+          IMAGE_TAG=test-image-${{ matrix.python-version }}
+          ./build_image.sh -py "${{ matrix.python-version }}" -t "${IMAGE_TAG}"
+          echo "IMAGE_TAG=${IMAGE_TAG}" >> $GITHUB_OUTPUT
+
+      - name: Container Healthcheck
+        working-directory: serve/docker
+        run: ./test_container_health.sh ${{ steps.image_build.outputs.IMAGE_TAG }}
+
+      - name: Check Python Version in Container
+        working-directory: serve/docker
+        run: ./test_container_python_version.sh ${{ steps.image_build.outputs.IMAGE_TAG }} ${{ matrix.python-version }}
+
+      - name: Test model running in container with sample image data 
+        run: |
+          cd serve/docker
+          ./test_container_model_prediction.sh ${{ steps.image_build.outputs.IMAGE_TAG }}
