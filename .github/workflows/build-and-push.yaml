@@ -1,0 +1,127 @@
+name: Build and push new images upon TorchServe release
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron:  '0 0 * * 0-6'
+  push:
+    branches: [ "master" ]
+
+# TODO: run healthchecks again
+# TODO: split jobs (uses: ./.github/workflows/flow.yaml)
+# TODO: refactor dockerfiles to allow better caches
+
+jobs:
+   update-releases:
+     runs-on: ubuntu-latest
+     outputs:
+       # TODO: activate this logic after next torchserve release
+       # should_build: ${{ steps.fetch_releases.outputs.should_deploy }}
+       latest_tag: ${{ steps.fetch_releases.outputs.latest_tag }}
+       latest_version: ${{ steps.fetch_releases.outputs.latest_version }}
+     steps:
+       - name: Check out this repo
+         uses: actions/checkout@v3
+ 
+       - name: Unit test
+         run: python get_latest_tag_test.py
+ 
+       - name: Fetch releases data and compare with current list
+         id: fetch_releases
+         run: |
+           curl https://api.github.com/repos/pytorch/serve/releases | jq '[{"tag": .[].tag_name}]' > releases_new.json
+           LATEST_VERSION=$(python get_latest_tag.py releases_new.json)
+           LATEST_TAG="v${LATEST_VERSION}"
+           echo "latest_tag=${LATEST_TAG}" >> $GITHUB_OUTPUT
+           echo "latest_version=${LATEST_VERSION}" >> $GITHUB_OUTPUT
+ 
+           echo "Latest version found from release" "\"v${LATEST_VERSION}\""
+           echo "Latest version already listed" "$(jq .[0].tag releases.json)"
+ 
+           # TODO: activate this logic after next torchserve release
+           # if [ "\"${LATEST_TAG}\"" != "$(jq .[0].tag releases.json)" ] 
+           # then
+           #   echo "New release found, trigger build and update releases..."
+           #   git diff releases.json releases_new.json
+           #   mv releases_new.json releases.json
+           #   echo "should_build=yes" >> $GITHUB_OUTPUT
+           # else
+           #   echo "No new releases found"
+           #   git diff releases.json releases_new.json
+           #   rm releases_new.json
+           #   echo 'should_build=no' >> $GITHUB_OUTPUT
+           # fi
+           cat $GITHUB_OUTPUT
+ 
+       - name: Commit and push if it changed
+         run: |-
+           git config user.name "Automated"
+           git config user.email "actions@users.noreply.github.com"
+           git add -A
+           timestamp=$(date -u)
+           git commit -m "Built on: ${timestamp}" || exit 0
+           git push
+
+   build-push-images:
+     # TODO: use after next torchserve release (fix bugs)
+     #if: ${{ needs.update-releases.outputs.should_build }} == 'yes'
+     #
+     needs: 
+       - update-releases
+     runs-on: ubuntu-latest
+     env:
+       docker_repo: "fabridamicelli/torchserve"
+       latest_tag: ${{ needs.update-releases.outputs.latest_tag }}
+       latest_version: ${{ needs.update-releases.outputs.latest_version }}
+     strategy:
+       fail-fast: false
+       matrix:
+         device: ['cpu', 'gpu']
+         python-version: ["3.8", "3.9", "3.10"]
+     steps:
+       - uses: actions/checkout@v3
+ 
+       - name: Clone TorchServe repo
+         run: |
+           git clone https://github.com/pytorch/serve.git
+           # TODO: do this after next release (-py not there yet)
+           # cd serve
+           # git reset --hard tags/${{ needs.update-releases.outputs.latest_tag }}
+           # git status
+ 
+       - name: Login to Docker Hub
+         uses: docker/login-action@v2
+         with:
+           username: ${{ secrets.DOCKER_USER }}
+           password: ${{ secrets.DOCKER_TOKEN }}
+ 
+       - name: Buil and push images to Docker Hub
+         working-directory: serve/docker
+         run: |
+           DEVICE=${{ matrix.device }}
+           VERSION=${latest_version}
+           REPO=${docker_repo}
+ 
+           IMAGE_TAG="${VERSION}-${DEVICE}-python${{ matrix.python-version }}"
+           TAG="${REPO}:${IMAGE_TAG}"
+ 
+           if [ "${DEVICE}" == 'gpu' ]
+           then
+             ./build_image.sh -py "${{ matrix.python-version }}" -t "${TAG}" -g
+           else
+             ./build_image.sh -py "${{ matrix.python-version }}" -t "${TAG}"
+           fi
+ 
+           # TODO: activate this after next torchserve release
+           # docker push $TAG
+           # Update latest as well
+           # LATEST_TAG="${REPO}:latest-${DEVICE}-python${{ matrix.python-version }}"
+           # docker tag $TAG $LATEST_TAG
+           # docker push $LATEST_TAG
+           
+           ROLLING_TAG="${REPO}:rolling-${DEVICE}-python${{ matrix.python-version }}"
+           docker tag $TAG $ROLLING_TAG
+           docker push $ROLLING_TAG
+ 
+       - name: Print images
+         run: docker images 
