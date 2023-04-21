@@ -10,7 +10,7 @@ Thus, any issues or requests regarding the content of the images should addresse
 
 
 ## Tags
-In general, the available tags are the same that you can find on the [official torchserve dockerhub repository](https://hub.docker.com/r/pytorch/torchserve/tags) plus a suffix that signals the python version like so `pytorch/torchserve:<TAG>` --> `fabridamicelli/torchserve:<TAG>-python<VERSION>`, where `TAG` is usually something like `0.6.1-gpu`.
+In general, the available tags are the same that you can find on the [official torchserve dockerhub repository](https://hub.docker.com/r/pytorch/torchserve/tags) plus a suffix that signals the python version like so `pytorch/torchserve:<TAG>` -> `fabridamicelli/torchserve:<TAG>-python<VERSION>`, where `TAG` is usually something like `0.6.1-gpu`.
 The `rolling` version is built everyday with the very latest state of the code in the [TorchServe repo](https://github.com/pytorch/serve).
 
 The current TorchServe officially released version (0.7.1) has some bugs in the [Dockerfile](https://github.com/pytorch/serve/pull/2202) and the [build script](https://github.com/pytorch/serve/pull/2226) that have been addressed and should be available starting from version 0.7.2.
@@ -23,7 +23,6 @@ Current tags examples:
 | official                      |               `python3.8`                    |                `python3.9`                   |                    `python3.10`                |
 | ---- | ---- | ---- | ---- |
 |`pytorch/torchserve:0.7.1-cpu` |`fabridamicelli/torchserve:rolling-python3.8` |`fabridamicelli/torchserve:rolling-python3.9` | `fabridamicelli/torchserve:rolling-python3.10` |
-| ---- | ---- | ---- | ---- |
 |`pytorch/torchserve:0.7.1-gpu` |`fabridamicelli/torchserve:rolling-python3.8` |`fabridamicelli/torchserve:rolling-python3.9` | `fabridamicelli/torchserve:rolling-python3.10` |
 
 

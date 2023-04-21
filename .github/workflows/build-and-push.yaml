@@ -4,8 +4,6 @@ on:
   workflow_dispatch:
   schedule:
     - cron:  '0 0 * * 0-6'
-  push:
-    branches: [ "master" ]
 
 # TODO: run healthchecks again
 # TODO: split jobs (uses: ./.github/workflows/flow.yaml)
