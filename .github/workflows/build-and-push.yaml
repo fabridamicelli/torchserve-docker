@@ -36,19 +36,19 @@ jobs:
            echo "Latest version found from release" "\"v${LATEST_VERSION}\""
            echo "Latest version already listed" "$(jq .[0].tag releases.json)"
  
-           # TODO: activate this logic after next torchserve release
-           # if [ "\"${LATEST_TAG}\"" != "$(jq .[0].tag releases.json)" ] 
-           # then
-           #   echo "New release found, trigger build and update releases..."
-           #   git diff releases.json releases_new.json
-           #   mv releases_new.json releases.json
-           #   echo "should_build=yes" >> $GITHUB_OUTPUT
-           # else
-           #   echo "No new releases found"
-           #   git diff releases.json releases_new.json
-           #   rm releases_new.json
-           #   echo 'should_build=no' >> $GITHUB_OUTPUT
-           # fi
+           # TODO: this will only have an effect after next torchserve release
+           if [ "\"${LATEST_TAG}\"" != "$(jq .[0].tag releases.json)" ] 
+           then
+             echo "New release found, trigger build and update releases..."
+             git diff releases.json releases_new.json
+             mv releases_new.json releases.json
+             echo "should_build=yes" >> $GITHUB_OUTPUT
+           else
+             echo "No new releases found"
+             git diff releases.json releases_new.json
+             rm releases_new.json
+             echo 'should_build=no' >> $GITHUB_OUTPUT
+           fi
            cat $GITHUB_OUTPUT
  
        - name: Commit and push if it changed
