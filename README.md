@@ -1,3 +1,5 @@
+[![Nightly Build and Push](https://github.com/fabridamicelli/torchserve-docker/actions/workflows/build-and-push.yaml/badge.svg)](https://github.com/fabridamicelli/torchserve-docker/actions/workflows/build-and-push.yaml)
+
 # torchserve-docker
 [TorchServe Docker images](https://hub.docker.com/r/fabridamicelli/torchserve) with specific Python version working out of the box.
 
