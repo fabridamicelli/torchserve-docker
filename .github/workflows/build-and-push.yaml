@@ -1,4 +1,4 @@
-name: Build and push new images upon TorchServe release
+name: Nightly Build and Push
 
 on:
   workflow_dispatch:
