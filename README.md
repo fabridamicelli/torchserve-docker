@@ -8,7 +8,7 @@ One can get around that by, for example, using that as a base image and building
 The goal of this cron job is to save you that work by providing you with an image that works with the desired Python version out of the box, for example `pytorch/torchserve:latest-(cpu/gpu)-python-3.10`.  
 
 This is a daily cron job that simply mirrors the official TorchServe repository using their Dockerfile and scripts to build the images, producing ready to use images with the desired Python version (3.8, 3.9, 3.10 or 3.11).  
-Thus, any issues or requests regarding the content of the images should addressed directly on the [official torchserce github repository](https://github.com/pytorch/serve)
+Thus, any issues or requests regarding the content of the images should addressed directly on the [official torchserve github repository](https://github.com/pytorch/serve)
 
 ## Usage
 Pick an image tag:
