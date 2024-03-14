@@ -30,7 +30,6 @@ Python 3.9.18
 
 ## Available Tags
 In general, the [available tags](https://hub.docker.com/r/fabridamicelli/torchserve) are the same that you can find on the official [torchserve repository](https://hub.docker.com/r/pytorch/torchserve/tags) plus a suffix that signals the python version like so `pytorch/torchserve:<TAG>` -> `fabridamicelli/torchserve:<TAG>-python<VERSION>`, where `TAG` is usually something like `0.6.1-gpu`.
-The `rolling` version is built everyday with the very latest state of the code in the [TorchServe repo](https://github.com/pytorch/serve).
 
 Due to some bugs in previous versions of TorchServe docker scripts (and for the sake of keeping things simple), this job produces images only starting from version `torchserve==0.9.0`.
 
