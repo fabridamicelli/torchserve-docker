@@ -1,6 +1,8 @@
+
 [![Nightly Build and Push](https://github.com/fabridamicelli/torchserve-docker/actions/workflows/build-and-push.yaml/badge.svg)](https://github.com/fabridamicelli/torchserve-docker/actions/workflows/build-and-push.yaml)
 
 # torchserve-docker
+
 [TorchServe Docker images](https://hub.docker.com/r/fabridamicelli/torchserve) with specific Python version working out of the box.
 
 TorchServe's official docker image `pytorch/torchserve:latest-(cpu/gpu)` uses Python 3.9 as default.
@@ -11,6 +13,8 @@ This is a daily cron job that simply mirrors the official TorchServe repository 
 Thus, any issues or requests regarding the content of the images should addressed directly on the [official torchserve github repository](https://github.com/pytorch/serve)
 
 ## Usage
+<img src='./images/torchserve-docker.gif' width='800'>
+
 Pick an image tag:
 ```bash
 TAG=fabridamicelli/torchserve:0.9.0-cpu-python3.9
