@@ -1,5 +1,5 @@
-
 [![Nightly Build and Push](https://github.com/fabridamicelli/torchserve-docker/actions/workflows/build-and-push.yaml/badge.svg)](https://github.com/fabridamicelli/torchserve-docker/actions/workflows/build-and-push.yaml)
+[![Docker Pulls](https://img.shields.io/docker/pulls/fabridamicelli/torchserve.svg)](https://hub.docker.com/r/fabridamicelli/torchserve)
 
 # torchserve-docker
 
