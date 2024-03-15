@@ -1,10 +1,9 @@
 [![Nightly Build and Push](https://github.com/fabridamicelli/torchserve-docker/actions/workflows/build-and-push.yaml/badge.svg)](https://github.com/fabridamicelli/torchserve-docker/actions/workflows/build-and-push.yaml)
 [![Docker Pulls](https://img.shields.io/docker/pulls/fabridamicelli/torchserve.svg)](https://hub.docker.com/r/fabridamicelli/torchserve)
 
-# torchserve-docker
-
 If you find this work useful, don't forget to give it a GitHub ⭐ to help others find and trust it!
 
+# torchserve-docker
 [TorchServe Docker images](https://hub.docker.com/r/fabridamicelli/torchserve) with specific Python version working out of the box.
 
 TorchServe's official docker image `pytorch/torchserve:latest-(cpu/gpu)` uses Python 3.9 as default.
