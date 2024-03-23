@@ -10,7 +10,7 @@ jobs:
    update-releases:
      runs-on: ubuntu-latest
      outputs:
-       should_build: ${{ steps.fetch_releases.outputs.should_deploy }}
+       should_build: ${{ steps.fetch_releases.outputs.should_build }}
        latest_tag: ${{ steps.fetch_releases.outputs.latest_tag }}
        latest_version: ${{ steps.fetch_releases.outputs.latest_version }}
      steps:
