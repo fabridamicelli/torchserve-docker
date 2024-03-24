@@ -72,7 +72,10 @@ jobs:
          python-version: ["3.8", "3.9", "3.10", "3.11"]
      steps:
        - uses: actions/checkout@v3
- 
+       
+       - name: Print condition from previous job
+         run: echo ${{ needs.update-releases.outputs.should_build }}
+         
        - name: Clone TorchServe repo
          run: |
            git clone https://github.com/pytorch/serve.git
