@@ -32,7 +32,6 @@ jobs:
            echo "Latest version found from release" "\"v${LATEST_VERSION}\""
            echo "Latest version already listed" "$(jq .[0].tag releases.json)"
  
-           # TODO: this will only have an effect after next torchserve release
            if [ "\"${LATEST_TAG}\"" != "$(jq .[0].tag releases.json)" ] 
            then
              echo "New release found, trigger build and update releases..."
@@ -43,7 +42,7 @@ jobs:
              echo "No new releases found"
              git diff releases.json releases_new.json
              rm releases_new.json
-             echo 'should_build=no' >> $GITHUB_OUTPUT
+             echo "should_build=no" >> $GITHUB_OUTPUT
            fi
            cat $GITHUB_OUTPUT
  
@@ -55,6 +54,23 @@ jobs:
            timestamp=$(date -u)
            git commit -m "Built on: ${timestamp}" || exit 0
            git push
+
+  # DEBUG
+   debug-printing:
+     if: ${{ needs.update-releases.outputs.should_build == 'no' }}
+     needs: 
+       - update-releases
+     runs-on: ubuntu-latest
+     steps:
+       - uses: actions/checkout@v3
+         
+       - name: debug printing
+         run: |
+           echo ${{ needs.update-releases.outputs.should_build == 'yes' }}  
+           echo ${{ needs.update-releases.outputs.should_build == 'no' }}  
+           echo ${{ needs.update-releases.outputs.should_build == 'false'}}  
+
+
 
    build-push-images:
      if: ${{ needs.update-releases.outputs.should_build == 'yes' }}  

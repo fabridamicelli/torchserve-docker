@@ -20,4 +20,3 @@ with tempfile.NamedTemporaryFile() as file:
     file.write(test_data.encode())
     file.seek(0)
     assert main(file.name) == expected, "Wrong tag parsing"
-
