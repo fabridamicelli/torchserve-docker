@@ -32,7 +32,6 @@ jobs:
            echo "Latest version found from release" "\"v${LATEST_VERSION}\""
            echo "Latest version already listed" "$(jq .[0].tag releases.json)"
  
-           # TODO: this will only have an effect after next torchserve release
            if [ "\"${LATEST_TAG}\"" != "$(jq .[0].tag releases.json)" ] 
            then
              echo "New release found, trigger build and update releases..."
