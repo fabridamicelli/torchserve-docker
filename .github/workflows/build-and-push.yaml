@@ -15,7 +15,7 @@ jobs:
        latest_version: ${{ steps.fetch_releases.outputs.latest_version }}
      steps:
        - name: Check out this repo
-         uses: actions/checkout@v3
+         uses: actions/checkout@v4
  
        - name: Unit test latest tag getter
          run: python get_latest_tag_test.py
@@ -70,7 +70,7 @@ jobs:
          device: ['cpu', 'gpu']
          python-version: ["3.8", "3.9", "3.10", "3.11"]
      steps:
-       - uses: actions/checkout@v3
+       - uses: actions/checkout@v4
          
        - name: Clone TorchServe repo
          run: |
