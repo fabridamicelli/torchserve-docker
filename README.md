@@ -46,6 +46,5 @@ Current tags examples:
 |`pytorch/torchserve:0.9.0-cpu` |`fabridamicelli/torchserve:0.9.0-python3.9` |`fabridamicelli/torchserve:0.9.0-python3.10` | `fabridamicelli/torchserve:0.9.0-python3.11` |
 |`pytorch/torchserve:0.9.1-gpu` |`fabridamicelli/torchserve:0.9.0-python3.9` |`fabridamicelli/torchserve:0.9.0-python3.10` | `fabridamicelli/torchserve:0.9.0-python3.11` |
 
-
 ### TODO
 - Split build and push to use manual dispatch with specific version
